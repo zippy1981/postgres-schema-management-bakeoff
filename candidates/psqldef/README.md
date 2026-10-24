@@ -6,9 +6,7 @@ Candidate: [sqldef](https://github.com/sqldef/sqldef), in its PostgreSQL form `p
 
 Downloaded by `bin/devcontainer_post_create.sh` into `~/.local/bin`:
 
-| Tool | Source | Why |
-|---|---|---|
-| `psqldef` | `sqldef/sqldef` latest release, `psqldef_linux_amd64.tar.gz` | The candidate CLI. |
+- Tool: `psqldef`; Source: `sqldef/sqldef` latest release, `psqldef_linux_amd64.tar.gz`; Why: The candidate CLI.
 
 ## How it deploys
 

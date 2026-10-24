@@ -6,9 +6,7 @@ Candidate: [Atlas](https://atlasgo.io) from Ariga. Its declarative mode takes th
 
 Downloaded by `bin/devcontainer_post_create.sh` into `~/.local/bin`:
 
-| Tool | Source | Why |
-|---|---|---|
-| `atlas` | `https://release.ariga.io/atlas/atlas-linux-amd64-latest` | The candidate CLI. |
+- Tool: `atlas`; Source: `https://release.ariga.io/atlas/atlas-linux-amd64-latest`; Why: The candidate CLI.
 
 ## How it deploys
 
