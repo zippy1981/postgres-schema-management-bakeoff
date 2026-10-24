@@ -7,7 +7,7 @@ Candidate: [pgquarrel](https://github.com/eulerto/pgquarrel). It compares two Po
 Built from source by `bin/devcontainer_post_create.sh` with CMake, installed to `~/.local/bin`:
 
 - `pgquarrel`: built from `github.com/eulerto/pgquarrel` (default branch, shallow clone). This is the candidate.
-- `libpq-dev`: installed with apt only when `pg_config` is missing. Provides the headers.
+- `postgresql-server-dev-all`: installed with apt on every run. Provides `pg_config` and `libpgport.a`. The earlier `libpq-dev` alone was not enough.
 - `cmake`, `make`, `git`: must already be on the runner.
 
 ## How it deploys
@@ -21,3 +21,4 @@ Built from source by `bin/devcontainer_post_create.sh` with CMake, installed to 
 - Built from the default branch, not a tag. Pin a tag once one is chosen.
 - Step 1 uses the naive sorted load, the same limit as migra and psqldef. A failure there is a loader failure, not a pgquarrel result.
 - Flags are `--source-dbname` and `--target-dbname`, checked against the upstream README.
+- The project's `cmake_minimum_required` is below 3.5, which current CMake rejects. The hook passes `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` to work around it.

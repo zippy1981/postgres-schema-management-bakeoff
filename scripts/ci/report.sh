@@ -9,8 +9,8 @@ echo "# Bake-off report"
 echo
 echo "Generated $(date -u +%FT%TZ) from the Candidates workflow."
 echo
-echo "| Candidate | Create | Install | Deploy | Objects | Dump lines |"
-echo "|---|---|---|---|---|---|"
+echo "| Candidate | Create | Install | Deploy | Objects match | Objects | Dump lines |"
+echo "|---|---|---|---|---|---|---|"
 
 for dir in "$root"/candidate-*/; do
   [[ -d "$dir" ]] || continue
@@ -19,7 +19,7 @@ for dir in "$root"/candidate-*/; do
   status_of() { grep "^$1=" "${dir}status.txt" 2>/dev/null | cut -d= -f2; }
   objects="$(wc -l < "${dir}objects.tsv" 2>/dev/null || echo 0)"
   dump="$(wc -l < "${dir}sql_dump.sql" 2>/dev/null || echo 0)"
-  echo "| ${name} | $(status_of create) | $(status_of install) | $(status_of deploy) | ${objects} | ${dump} |"
+  echo "| ${name} | $(status_of create) | $(status_of install) | $(status_of deploy) | $(status_of objects) | ${objects} | ${dump} |"
 done
 
 echo
