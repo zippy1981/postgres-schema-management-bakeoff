@@ -13,7 +13,7 @@ src="candidates/pgquarrel/working_folder/src"
 rm -rf "$src"
 mkdir -p "$(dirname "$src")"
 git clone --depth 1 https://github.com/eulerto/pgquarrel "$src"
-cmake -S "$src" -B "$src/build" -DCMAKE_INSTALL_PREFIX="$HOME/.local"
+cmake -S "$src" -B "$src/build" -DCMAKE_INSTALL_PREFIX="$HOME/.local" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 cmake --build "$src/build" --parallel
 cmake --install "$src/build"
 echo "pgquarrel: installed from $(git -C "$src" rev-parse --short HEAD)"

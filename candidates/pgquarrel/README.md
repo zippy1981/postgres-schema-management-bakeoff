@@ -21,3 +21,4 @@ Built from source by `bin/devcontainer_post_create.sh` with CMake, installed to 
 - Built from the default branch, not a tag. Pin a tag once one is chosen.
 - Step 1 uses the naive sorted load, the same limit as migra and psqldef. A failure there is a loader failure, not a pgquarrel result.
 - Flags are `--source-dbname` and `--target-dbname`, checked against the upstream README.
+- The project's `cmake_minimum_required` is below 3.5, which current CMake rejects. The hook passes `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` to work around it.
