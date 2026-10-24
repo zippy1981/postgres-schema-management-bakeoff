@@ -1,0 +1,9 @@
+{
+  "features": {
+    "registry.gitlab.com/pravorskyi/devcontainer-features/claude-code:1": {
+      "version": "1.0.0",
+      "resolved": "registry.gitlab.com/pravorskyi/devcontainer-features/claude-code@sha256:a90de8afc73d35e2a849efa2ef20a42557b85bfca17a5d72088d8549e2709df3",
+      "integrity": "sha256:a90de8afc73d35e2a849efa2ef20a42557b85bfca17a5d72088d8549e2709df3"
+    }
+  }
+}
