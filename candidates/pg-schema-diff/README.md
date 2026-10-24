@@ -12,9 +12,9 @@ Needs the Go toolchain on `PATH`. GitHub's `ubuntu-latest` runner has one. The d
 
 ## How it deploys
 
-`pg-schema-diff apply --dsn "$DATABASE_URL" --schema-dir database`, with the tree passed unchanged. This tests whether the tool orders the files itself.
+`pg-schema-diff apply --from-dsn "$DATABASE_URL" --to-dir database`, with the tree passed unchanged. This tests whether the tool orders the files itself.
 
 ## Known limits
 
 - Version is `@latest`, not pinned. Pin it once a version is chosen.
-- The CLI flags are written from memory and are unverified. The first matrix run is the check.
+- Flags checked against the upstream README: `apply --from-dsn` and `--to-dir`. `--version` does not exist, so the install hook no longer calls it.

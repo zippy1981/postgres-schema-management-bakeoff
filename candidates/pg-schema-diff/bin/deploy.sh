@@ -5,4 +5,4 @@ set -euo pipefail
 cd "$(dirname "$0")/../../.."
 export PATH="$HOME/.local/bin:$PATH"
 
-pg-schema-diff apply --dsn "$DATABASE_URL" --schema-dir database
+pg-schema-diff apply --from-dsn "$DATABASE_URL" --to-dir database
