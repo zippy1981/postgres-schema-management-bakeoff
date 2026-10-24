@@ -17,4 +17,5 @@ Downloaded by `bin/devcontainer_post_create.sh` into `~/.local/bin`:
 ## Known limits
 
 - The binary is `latest`, not pinned. The install log records the version.
+- Connects with `sslmode=disable`. The CI and devcontainer Postgres have no SSL, and Atlas refuses to connect without an explicit setting.
 - Atlas also has a migration-directory mode. The rules rule that out, so only the declarative mode is used.

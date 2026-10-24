@@ -7,13 +7,15 @@ export PATH="$HOME/.local/bin:$PATH"
 
 work="candidates/atlas/working_folder"
 mkdir -p "$work"
-dev_url="${DATABASE_URL%/*}/${DATABASE_URL##*/}_dev"
+# Atlas refuses a server without SSL unless sslmode is set. CI's Postgres has no SSL.
+target_url="${DATABASE_URL}?sslmode=disable"
+dev_url="${DATABASE_URL%/*}/${DATABASE_URL##*/}_dev?sslmode=disable"
 
 scripts/ci/create-db.sh "$dev_url"
 scripts/ci/desired-state.sh database > "$work/desired.sql"
 
 atlas schema apply \
-  --url "$DATABASE_URL" \
+  --url "$target_url" \
   --dev-url "$dev_url" \
   --to "file://$work/desired.sql" \
   --auto-approve
