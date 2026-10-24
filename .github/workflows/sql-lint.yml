@@ -30,5 +30,7 @@ jobs:
         uses: astral-sh/setup-uv@v6
 
       - name: Lint SQL
+        # Skips until database/ exists on this branch; it is created by schema/complex-test-schema.
         # Pinned to the same version as pyproject.toml so CI and the devcontainer agree.
+        if: hashFiles('database/**') != ''
         run: uvx sqlfluff==3.4.2 lint database --dialect postgres
