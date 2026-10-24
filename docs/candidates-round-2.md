@@ -65,6 +65,7 @@ Two entries need checking before a decision: `supabase/pg-toolbelt` (its input f
 
 ## Not yet done
 
-- No candidate folders are created. That waits for the user to name them.
-- The unverified entries are not run. Scores for them are provisional.
+- The four shortlisted tools now have candidate folders: `candidates/pgschema`, `candidates/pgmold`, `candidates/scheme` and `candidates/pgdeclare`. Each README records how the tool is run and its first local result.
+- `pgmold` and procedures: its parser rejects `CREATE PROCEDURE`, so it cannot deploy this schema. See `candidates/pgmold/README.md`.
+- `supabase/pg-toolbelt` is still unverified and not run. Scores for it are provisional.
 - Stars and push dates are a snapshot from 2026-10-24.
