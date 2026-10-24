@@ -23,7 +23,7 @@ Own the lifecycle of agent definitions (`agents/<slug>.md`) and skills (`skills/
 1. **Format enforcement.** Every agent file is `agents/<slug>.md` with YAML front matter containing:
    - `name`: identical to the file slug (lowercase, hyphenated, no spaces).
    - `description`: one line stating when to use the agent. Specific verbs and objects, not "helps with the project".
-   
+
    The body has these sections, in this order: **Purpose**, **Inputs**, **Responsibilities**, **Boundaries**, **Handoffs**, **Done when**.
 
    Every skill is `skills/<name>/SKILL.md` with front matter `name` (matching the folder) and `description`, followed by the instructions. Reject or fix any file that does not match.

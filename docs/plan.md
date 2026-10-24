@@ -17,7 +17,7 @@
 
 ## 2. Repository layout
 
-```
+```text
 .devcontainer/                 Dev container definition (compose service "app" + "db")
   devcontainer.json
   docker-compose.yml
@@ -144,7 +144,7 @@ Each agent has one purpose, a set of owned paths, and explicit handoffs. An agen
 Eight branches run in parallel. Each owns a disjoint set of files, so no two branches conflict on content.
 
 | Branch | Owns | Purpose |
-|---|---|---|
+| --- | --- | --- |
 | `docs/adr-process` | `docs/adr/` | ADR template and first ADRs (rules, layout, Postgres version) |
 | `agents/orchestrator` | `agents/orchestrator.md` | Orchestrator role definition |
 | `agents/schema-author` | `agents/schema-author.md`, `database/` | Schema author role and the initial SSDT-style schema |
@@ -176,7 +176,7 @@ Rules for parallel work:
 These are suggestions. None is created by this plan.
 
 | Skill name | Purpose | Used by |
-|---|---|---|
+| --- | --- | --- |
 | `sql-layout-ssdt` | SSDT-style layout: one object per file, filename = `<schema>.<object>.sql`, folder per object type, deterministic ordering of files. | `schema-author`, `orchestrator` |
 | `postgres-ddl-authoring` | Writing PostgreSQL DDL that deploys in any file order: FK ordering, circular references via deferred `ALTER TABLE ... ADD CONSTRAINT`, self-referencing FKs, view dependency order, procedure bodies. | `schema-author` |
 | `pg-schema-dump` | Deterministic schema dump with `pg_dump --schema-only`: fixed option set (for example `--schema-only --no-owner --no-privileges --no-comments` as decided in an ADR), sorted output, stable across runs. | `migration-runner`, `postgres-admin` |

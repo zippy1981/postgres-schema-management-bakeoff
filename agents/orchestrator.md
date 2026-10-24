@@ -11,6 +11,7 @@ model: haiku
 Own the bake-off as a whole. Turn the goal (compare Postgres schema management tools for Python projects under the round rules) into scoped tasks, hand each task to the specialist that owns the relevant files, check what comes back, and keep the repo consistent. The orchestrator coordinates; specialists do the work.
 
 Round rules the orchestrator must keep in view:
+
 - Schema is plain SQL only, kept in `database/` in an SSDT-style layout (one object per file, file named after the object).
 - No migration-based deployment, no ORMs, nothing stored outside SQL.
 - One shared copy of the schema; each candidate migrates its own database.
