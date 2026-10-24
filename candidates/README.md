@@ -5,7 +5,7 @@ Each folder under `candidates/` is one candidate. The **Candidates** workflow (`
 ## Contract
 
 | File | Required | Purpose |
-|---|---|---|
+| --- | --- | --- |
 | `bin/deploy.sh` | yes | Deploys the shared `database/` tree to `$DATABASE_URL`. Exit non-zero on failure. Log to stdout and stderr. |
 | `bin/devcontainer_post_create.sh` | yes | Installs the candidate's tools. Idempotent. Runs in the devcontainer and in CI before `deploy.sh`. |
 | `README.md` | yes | Lists the tools the install step installs, and how the candidate is run. |

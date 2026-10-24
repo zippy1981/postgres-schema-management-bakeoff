@@ -63,14 +63,19 @@ jobs:
           --health-timeout 5s
           --health-retries 10
     env:
-      CANDIDATE_DIR: candidates/${{ matrix.candidate }}
       DATABASE_ADMIN_URL: postgresql://postgres:postgres@localhost:5432/postgres
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/bakeoff_${{ replace(matrix.candidate, '-', '_') }}
-      DB_NAME: bakeoff_${{ replace(matrix.candidate, '-', '_') }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: astral-sh/setup-uv@v6
+
+      - name: Set paths and database name for this candidate
+        run: |
+          name="${{ matrix.candidate }}"
+          db="bakeoff_${name//-/_}"
+          echo "CANDIDATE_DIR=candidates/${name}" >> "$GITHUB_ENV"
+          echo "DB_NAME=${db}" >> "$GITHUB_ENV"
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/${db}" >> "$GITHUB_ENV"
 
       - name: Prepare results directory
         run: mkdir -p "$CANDIDATE_DIR/test_results"
@@ -118,7 +123,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: candidate-${{ matrix.candidate }}
-          path: ${{ env.CANDIDATE_DIR }}/test_results/
+          path: candidates/${{ matrix.candidate }}/test_results/
           if-no-files-found: warn
           retention-days: 30
 
