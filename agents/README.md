@@ -7,7 +7,7 @@ The `orchestrator` coordinates the others: it plans the work, delegates by name,
 ## Roster
 
 | Agent | File | Responsibility | Owns |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `orchestrator` | `agents/orchestrator.md` | Plans the bake-off, delegates, sequences and parallelizes work, verifies reports, decides merges, enforces file ownership. | `agents/orchestrator.md`, `agents/README.md` |
 | `adr-author` | `agents/adr-author.md` | Writes and updates architecture decision records. | `docs/adr/` |
 | `schema-author` | `agents/schema-author.md` | Writes plain SQL schema objects, one object per file, named after the object. | `database/` |

@@ -33,9 +33,11 @@ Execute a single candidate's schema migration in a controlled, repeatable way an
 
 3. **Dump the resulting schema**
    - Run:
-     ```
+
+     ```bash
      pg_dump --schema-only --no-owner --no-privileges --no-tablespaces --no-security-labels --no-subscriptions -d <candidate database>
      ```
+
    - Write output to `candidates/<NAME>/test_results/sql_dump.sql`.
    - Strip any volatile header lines (timestamps, host names, user names) so the file is comparable across candidates. Record in the log that stripping happened and which lines were removed.
    - Log the `pg_dump` exit code.

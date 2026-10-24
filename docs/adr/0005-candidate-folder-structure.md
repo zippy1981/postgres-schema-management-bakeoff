@@ -10,7 +10,7 @@ Each candidate tool needs a predictable place for its scripts, its working files
 
 Each candidate lives in `candidates/<CANDIDATE_NAME>/` with this structure:
 
-```
+```text
 candidates/<CANDIDATE_NAME>/
 ├── bin/                         # scripts that run the candidate, including bin/devcontainer_post_create.sh (ADR 0006)
 ├── working_folder/              # the candidate's own working files (config, generated output, state)
