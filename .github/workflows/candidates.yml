@@ -1,0 +1,154 @@
+name: Candidates
+
+on:
+  pull_request:
+    paths:
+      - "candidates/**"
+      - "database/**"
+      - "scripts/ci/**"
+      - ".github/workflows/candidates.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "candidates/**"
+      - "database/**"
+      - "scripts/ci/**"
+      - ".github/workflows/candidates.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    name: Find candidates
+    runs-on: ubuntu-latest
+    outputs:
+      candidates: ${{ steps.list.outputs.candidates }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: list
+        name: List candidate folders that have bin/deploy.sh
+        run: |
+          names=()
+          for dir in candidates/*/; do
+            if [[ -f "${dir}bin/deploy.sh" ]]; then
+              names+=("$(basename "$dir")")
+            fi
+          done
+          echo "Found ${#names[@]} candidate(s): ${names[*]:-none}"
+          printf 'candidates=%s\n' "$(jq -cn '$ARGS.positional' --args -- "${names[@]}")" >> "$GITHUB_OUTPUT"
+
+  candidate:
+    name: "candidate: ${{ matrix.candidate }}"
+    needs: discover
+    if: needs.discover.outputs.candidates != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        candidate: ${{ fromJSON(needs.discover.outputs.candidates) }}
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      CANDIDATE_DIR: candidates/${{ matrix.candidate }}
+      DATABASE_ADMIN_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/bakeoff_${{ replace(matrix.candidate, '-', '_') }}
+      DB_NAME: bakeoff_${{ replace(matrix.candidate, '-', '_') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Prepare results directory
+        run: mkdir -p "$CANDIDATE_DIR/test_results"
+
+      - id: create
+        name: Create candidate database
+        continue-on-error: true
+        run: |
+          echo "== create $(date -u +%FT%TZ)" | tee -a "$CANDIDATE_DIR/test_results/test_logs.log"
+          psql "$DATABASE_ADMIN_URL" -v ON_ERROR_STOP=1 \
+            -c "DROP DATABASE IF EXISTS $DB_NAME" \
+            -c "CREATE DATABASE $DB_NAME" 2>&1 | tee -a "$CANDIDATE_DIR/test_results/test_logs.log"
+
+      - id: install
+        name: Install candidate tools
+        continue-on-error: true
+        run: |
+          echo "== install $(date -u +%FT%TZ)" | tee -a "$CANDIDATE_DIR/test_results/test_logs.log"
+          bash "$CANDIDATE_DIR/bin/devcontainer_post_create.sh" 2>&1 | tee -a "$CANDIDATE_DIR/test_results/test_logs.log"
+
+      - id: deploy
+        name: Deploy schema
+        if: steps.install.outcome == 'success'
+        continue-on-error: true
+        run: |
+          echo "== deploy $(date -u +%FT%TZ)" | tee -a "$CANDIDATE_DIR/test_results/test_logs.log"
+          bash "$CANDIDATE_DIR/bin/deploy.sh" 2>&1 | tee -a "$CANDIDATE_DIR/test_results/test_logs.log"
+
+      - name: Capture schema dump and object list
+        if: always()
+        run: bash scripts/ci/capture.sh "$CANDIDATE_DIR" "$DATABASE_URL"
+
+      - name: Record step outcomes
+        if: always()
+        run: |
+          {
+            echo "create=${{ steps.create.outcome }}"
+            echo "install=${{ steps.install.outcome }}"
+            echo "deploy=${{ steps.deploy.outcome }}"
+          } > "$CANDIDATE_DIR/test_results/status.txt"
+          cat "$CANDIDATE_DIR/test_results/status.txt"
+
+      - name: Publish candidate results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate-${{ matrix.candidate }}
+          path: ${{ env.CANDIDATE_DIR }}/test_results/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Fail the job if any step failed
+        if: always() && (steps.create.outcome != 'success' || steps.install.outcome != 'success' || steps.deploy.outcome != 'success')
+        run: exit 1
+
+  report:
+    name: Bake-off report
+    needs: [discover, candidate]
+    if: always() && needs.discover.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: candidate-*
+          path: artifacts
+        continue-on-error: true
+
+      - name: Build report
+        run: bash scripts/ci/report.sh artifacts > bakeoff-report.md
+
+      - name: Show report in the run summary
+        run: cat bakeoff-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish report
+        uses: actions/upload-artifact@v4
+        with:
+          name: bakeoff-report
+          path: bakeoff-report.md
+          retention-days: 30
