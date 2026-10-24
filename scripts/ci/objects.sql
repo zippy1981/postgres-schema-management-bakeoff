@@ -1,6 +1,6 @@
 SELECT n.nspname, n.nspname, 'schema'
 FROM pg_namespace AS n
-WHERE n.nspname NOT LIKE 'pg\_%' AND n.nspname <> 'information_schema'
+WHERE n.nspname NOT LIKE 'pg\_%' AND n.nspname NOT IN ('information_schema', 'public')
 UNION ALL
 SELECT n.nspname, c.relname,
     CASE c.relkind
