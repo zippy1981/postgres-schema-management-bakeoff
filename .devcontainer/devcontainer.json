@@ -9,7 +9,8 @@
 		"registry.gitlab.com/pravorskyi/devcontainer-features/claude-code:1": {
 			"channel": "stable"
 		}
-	}
+	},
+	"postCreateCommand": "bash .devcontainer/post_create.sh"
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
