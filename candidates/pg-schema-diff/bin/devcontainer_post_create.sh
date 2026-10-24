@@ -8,4 +8,4 @@ if ! command -v go >/dev/null; then
 fi
 GOBIN="$HOME/.local/bin" go install github.com/stripe/pg-schema-diff/cmd/pg-schema-diff@latest
 test -x "$HOME/.local/bin/pg-schema-diff"
-echo "pg-schema-diff: installed $("$HOME/.local/bin/pg-schema-diff" --version 2>&1 | head -1 || true)"
+echo "pg-schema-diff: installed at $HOME/.local/bin/pg-schema-diff"
