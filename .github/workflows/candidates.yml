@@ -64,6 +64,10 @@ jobs:
           --health-retries 10
     env:
       DATABASE_ADMIN_URL: postgresql://postgres:postgres@localhost:5432/postgres
+    defaults:
+      run:
+        # pipefail keeps a failing deploy visible through `| tee`.
+        shell: bash --noprofile --norc -eo pipefail {0}
     steps:
       - uses: actions/checkout@v4
 
