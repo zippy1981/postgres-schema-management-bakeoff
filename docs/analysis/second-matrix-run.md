@@ -47,4 +47,10 @@ These need decisions from you before they run.
 
 ## Suggested additional workflows
 
-See the summary in the PR description. They are for linting the objects in the repo: SQL style beyond sqlfluff, a check that each `database/` file has one object named after it, and a check that candidate folders have the required files.
+These lint the objects in the repo, beyond what sqlfluff checks today:
+
+1. **One object per file.** Fail when a file under `database/` defines more than one `CREATE` statement, or when its name does not match the object it defines.
+2. **Dependency order.** Parse `database/` and fail when an object references one that is not created earlier in the dependency order. This would catch the traps before any candidate runs.
+3. **Required schema members.** Fail when `database/` lacks a schema, a view that depends on a view, or a procedure, as section 3 of `docs/plan.md` requires.
+4. **Candidate contract.** Fail when a candidate folder lacks `bin/deploy.sh`, `bin/devcontainer_post_create.sh` or `README.md`.
+5. **Procedure bodies.** Run `plpgsql_check` against a scratch database, so a procedure that references a missing table fails even if it was created.
