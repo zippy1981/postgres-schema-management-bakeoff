@@ -7,6 +7,10 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 cd "${repo_root}"
 
+# Install the locked Python tools (sqlfluff, see pyproject.toml and uv.lock).
+echo "post_create: syncing uv dependencies"
+uv sync --frozen
+
 # nullglob makes an unmatched pattern expand to nothing instead of the literal pattern.
 shopt -s nullglob
 hooks=(candidates/*/bin/devcontainer_post_create.sh)
