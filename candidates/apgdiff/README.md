@@ -8,7 +8,7 @@ Downloaded by `bin/devcontainer_post_create.sh` into `~/.local/share/apgdiff`:
 
 | Tool | Source | Why |
 | --- | --- | --- |
-| `apgdiff.jar` | `https://www.apgdiff.com/download/apgdiff-2.7.0.zip`, linked as `apgdiff.jar` | The candidate. |
+| `apgdiff.jar` | `https://www.apgdiff.com/download/apgdiff-2.4-bin.zip`, linked as `apgdiff.jar` | The candidate. |
 | Java runtime | Must already be on `PATH` | Runs the jar. The hook fails without it. |
 | `unzip`, `curl` | Already on the runner | Fetch and extract. |
 
