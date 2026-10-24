@@ -1,0 +1,36 @@
+name: SQL lint
+
+on:
+  pull_request:
+    paths:
+      - "database/**"
+      - ".sqlfluff"
+      - ".github/workflows/sql-lint.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "database/**"
+      - ".sqlfluff"
+      - ".github/workflows/sql-lint.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sqlfluff:
+    name: Lint database/ with sqlfluff
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Lint SQL
+        # Skips until database/ exists on this branch; it is created by schema/complex-test-schema.
+        # Pinned to the same version as pyproject.toml so CI and the devcontainer agree.
+        if: hashFiles('database/**') != ''
+        run: uvx sqlfluff==3.4.2 lint database --dialect postgres
