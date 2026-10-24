@@ -6,14 +6,19 @@ services:
       context: ..
       dockerfile: .devcontainer/Dockerfile
 
+    # Mount only this repo. z relabels it so containers can read it on SELinux hosts (e.g. Fedora); no-op elsewhere.
     volumes:
-      - ../..:/workspaces:cached
+      - ..:/workspaces/postgres-schema-management-bakeoff:cached,z
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
     network_mode: service:db
+
+    # podman-compose does not infer the dependency from network_mode, so it can start app before db.
+    depends_on:
+      - db
 
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
@@ -33,3 +38,8 @@ services:
 
 volumes:
   postgres-data:
+
+# podman-compose: run services outside a pod so a host-side PODMAN_USERNS=keep-id applies
+# (podman ignores it for containers in a pod). Docker ignores x- keys.
+x-podman:
+  in_pod: false
