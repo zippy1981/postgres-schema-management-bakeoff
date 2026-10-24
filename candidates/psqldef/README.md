@@ -11,7 +11,7 @@ Downloaded by `bin/devcontainer_post_create.sh` into `~/.local/bin`:
 ## How it deploys
 
 1. Passes `database/` in sorted path order as one SQL stream (`scripts/ci/desired-state.sh`).
-2. Runs `psqldef` with host, port, user, password and database split out of `DATABASE_URL` (`scripts/ci/db-parts.sh`).
+2. Runs `psqldef --apply` with host, port, user, password and database split out of `DATABASE_URL` (`scripts/ci/db-parts.sh`). `--apply` is required. Without it, psqldef only dry-runs.
 
 ## Known limits
 
