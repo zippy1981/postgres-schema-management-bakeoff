@@ -6,9 +6,7 @@ Candidate: [pg-schema-diff](https://github.com/stripe/pg-schema-diff) from Strip
 
 Built by `bin/devcontainer_post_create.sh` with `go install` into `~/.local/bin`:
 
-| Tool | Source | Why |
-|---|---|---|
-| `pg-schema-diff` | `github.com/stripe/pg-schema-diff/cmd/pg-schema-diff@latest` | The candidate. |
+- Tool: `pg-schema-diff`; Source: `github.com/stripe/pg-schema-diff/cmd/pg-schema-diff@latest`; Why: The candidate.
 
 Needs the Go toolchain on `PATH`. GitHub's `ubuntu-latest` runner has one. The devcontainer does not, so this hook stops there.
 

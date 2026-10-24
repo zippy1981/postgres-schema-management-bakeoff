@@ -7,7 +7,7 @@ Candidate: [migra](https://github.com/djrobstep/migra). It diffs two databases a
 Installed by `bin/devcontainer_post_create.sh` with `uv tool install` into `~/.local/bin`:
 
 | Tool | Source | Why |
-|---|---|---|
+| --- | --- | --- |
 | `migra` | PyPI, latest | The candidate. Diffs the target against a shadow database. |
 | `psycopg2-binary` | PyPI, injected with `--with` | Postgres driver that migra imports. |
 
