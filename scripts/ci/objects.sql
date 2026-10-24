@@ -26,6 +26,9 @@ SELECT n.nspname, con.conname, 'constraint ' || con.contype::text
 FROM pg_constraint AS con
 INNER JOIN pg_namespace AS n ON n.oid = con.connamespace
 WHERE n.nspname NOT IN ('pg_catalog', 'information_schema', 'pg_toast')
+    -- NOT NULL is a pg_constraint row (contype 'n') from PostgreSQL 18 on, and not before.
+    -- Leaving it in makes the object list depend on the server version.
+    AND con.contype <> 'n'
 UNION ALL
 SELECT n.nspname, t.tgname, 'trigger'
 FROM pg_trigger AS t
