@@ -11,7 +11,7 @@ mkdir -p "$work"
 target_url="${DATABASE_URL}?sslmode=disable"
 dev_url="${DATABASE_URL%/*}/${DATABASE_URL##*/}_dev?sslmode=disable"
 
-scripts/ci/create-db.sh "$dev_url"
+scripts/ci/create-db.sh "${DATABASE_URL%/*}/${DATABASE_URL##*/}_dev"
 scripts/ci/desired-state.sh database > "$work/desired.sql"
 
 atlas schema apply \
