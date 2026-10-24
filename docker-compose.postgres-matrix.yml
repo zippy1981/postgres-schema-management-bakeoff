@@ -1,0 +1,44 @@
+# One PostgreSQL server per supported major version, used by the candidate matrix.
+#
+# Pins are the latest minor of each supported major, as of 2026-10-24, per the PostgreSQL
+# versioning policy: 14 (EOL November 2026), 15, 16, 17 and 18 are supported.
+#
+# The Candidates workflow starts one service per matrix cell with
+#   docker compose -f docker-compose.postgres-matrix.yml up -d --wait pg<N>
+# Locally, start them all with `docker compose -f docker-compose.postgres-matrix.yml up -d --wait`.
+# The host port is 54<N>, so pg14 is on 5414 and pg18 is on 5418.
+
+x-postgres: &postgres
+  environment:
+    POSTGRES_PASSWORD: postgres
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U postgres"]
+    interval: 5s
+    timeout: 5s
+    retries: 10
+
+services:
+  pg14:
+    <<: *postgres
+    image: postgres:14.23
+    ports: ["5414:5432"]
+
+  pg15:
+    <<: *postgres
+    image: postgres:15.18
+    ports: ["5415:5432"]
+
+  pg16:
+    <<: *postgres
+    image: postgres:16.14
+    ports: ["5416:5432"]
+
+  pg17:
+    <<: *postgres
+    image: postgres:17.10
+    ports: ["5417:5432"]
+
+  pg18:
+    <<: *postgres
+    image: postgres:18.4
+    ports: ["5418:5432"]

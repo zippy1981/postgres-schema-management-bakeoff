@@ -42,7 +42,7 @@ jobs:
           printf 'candidates=%s\n' "$(jq -cn '$ARGS.positional' --args -- "${names[@]}")" >> "$GITHUB_OUTPUT"
 
   candidate:
-    name: "candidate: ${{ matrix.candidate }}"
+    name: "candidate: ${{ matrix.candidate }} (pg${{ matrix.pg }})"
     needs: discover
     if: needs.discover.outputs.candidates != '[]'
     runs-on: ubuntu-latest
@@ -50,20 +50,10 @@ jobs:
       fail-fast: false
       matrix:
         candidate: ${{ fromJSON(needs.discover.outputs.candidates) }}
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
+        # Major versions of the supported PostgreSQL releases, served by docker-compose.postgres-matrix.yml.
+        pg: [14, 15, 16, 17, 18]
     env:
-      DATABASE_ADMIN_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      DATABASE_ADMIN_URL: postgresql://postgres:postgres@localhost:54${{ matrix.pg }}/postgres
     defaults:
       run:
         # pipefail keeps a failing deploy visible through `| tee`.
@@ -73,13 +63,16 @@ jobs:
 
       - uses: astral-sh/setup-uv@v6
 
+      - name: Start PostgreSQL ${{ matrix.pg }}
+        run: docker compose -f docker-compose.postgres-matrix.yml up -d --wait pg${{ matrix.pg }}
+
       - name: Set paths and database name for this candidate
         run: |
           name="${{ matrix.candidate }}"
           db="bakeoff_${name//-/_}"
           echo "CANDIDATE_DIR=candidates/${name}" >> "$GITHUB_ENV"
           echo "DB_NAME=${db}" >> "$GITHUB_ENV"
-          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/${db}" >> "$GITHUB_ENV"
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:54${{ matrix.pg }}/${db}" >> "$GITHUB_ENV"
 
       - name: Prepare results directory
         run: mkdir -p "$CANDIDATE_DIR/test_results"
@@ -126,6 +119,7 @@ jobs:
             echo "install=${{ steps.install.outcome }}"
             echo "deploy=${{ steps.deploy.outcome }}"
             echo "objects=${{ steps.verify.outcome }}"
+            echo "postgres=${{ matrix.pg }}"
           } > "$CANDIDATE_DIR/test_results/status.txt"
           cat "$CANDIDATE_DIR/test_results/status.txt"
 
@@ -133,10 +127,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: candidate-${{ matrix.candidate }}
+          name: candidate-${{ matrix.candidate }}-pg${{ matrix.pg }}
           path: candidates/${{ matrix.candidate }}/test_results/
           if-no-files-found: warn
           retention-days: 30
+
+      - name: Stop PostgreSQL ${{ matrix.pg }}
+        if: always()
+        run: docker compose -f docker-compose.postgres-matrix.yml down -v --remove-orphans pg${{ matrix.pg }}
 
       - name: Fail the job if any step failed
         if: always() && (steps.create.outcome != 'success' || steps.install.outcome != 'success' || steps.deploy.outcome != 'success' || steps.verify.outcome != 'success')
