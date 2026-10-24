@@ -1,0 +1,55 @@
+audit	change_log_pkey	constraint p
+audit	change_log_pkey	index
+audit	audit	schema
+audit	change_log_change_id_seq	sequence
+audit	change_log	table
+inventory	product_unit_price_check	constraint c
+inventory	category_parent_id_fkey	constraint f
+inventory	product_category_id_fkey	constraint f
+inventory	category_pkey	constraint p
+inventory	product_pkey	constraint p
+inventory	product_sku_key	constraint u
+inventory	category_pkey	index
+inventory	product_pkey	index
+inventory	product_sku_key	index
+inventory	inventory	schema
+inventory	category_category_id_seq	sequence
+inventory	product_product_id_seq	sequence
+inventory	category	table
+inventory	product	table
+inventory	v_category_tree	view
+sales	order_detail_quantity_check	constraint c
+sales	order_detail_unit_price_check	constraint c
+sales	fk_department_manager	constraint f
+sales	fk_employee_department	constraint f
+sales	order_detail_order_id_fkey	constraint f
+sales	order_detail_product_id_fkey	constraint f
+sales	order_header_customer_id_fkey	constraint f
+sales	customer_pkey	constraint p
+sales	department_pkey	constraint p
+sales	employee_pkey	constraint p
+sales	order_detail_pkey	constraint p
+sales	order_header_pkey	constraint p
+sales	customer_email_key	constraint u
+sales	department_name_key	constraint u
+sales	customer_email_key	index
+sales	customer_pkey	index
+sales	department_name_key	index
+sales	department_pkey	index
+sales	employee_pkey	index
+sales	order_detail_pkey	index
+sales	order_header_pkey	index
+sales	set_order_status	procedure
+sales	sales	schema
+sales	customer_customer_id_seq	sequence
+sales	department_department_id_seq	sequence
+sales	employee_employee_id_seq	sequence
+sales	order_detail_order_detail_id_seq	sequence
+sales	order_header_order_id_seq	sequence
+sales	customer	table
+sales	department	table
+sales	employee	table
+sales	order_detail	table
+sales	order_header	table
+sales	v_customer_totals	view
+sales	v_order_detail	view
