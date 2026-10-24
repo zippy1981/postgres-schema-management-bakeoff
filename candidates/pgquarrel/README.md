@@ -7,7 +7,7 @@ Candidate: [pgquarrel](https://github.com/eulerto/pgquarrel). It compares two Po
 Built from source by `bin/devcontainer_post_create.sh` with CMake, installed to `~/.local/bin`:
 
 - `pgquarrel`: built from `github.com/eulerto/pgquarrel` (default branch, shallow clone). This is the candidate.
-- `libpq-dev`: installed with apt only when `pg_config` is missing. Provides the headers.
+- `postgresql-server-dev-all`: installed with apt on every run. Provides `pg_config` and `libpgport.a`. The earlier `libpq-dev` alone was not enough.
 - `cmake`, `make`, `git`: must already be on the runner.
 
 ## How it deploys
