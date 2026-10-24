@@ -7,7 +7,7 @@ Candidate: [pgquarrel](https://github.com/eulerto/pgquarrel). It compares two Po
 Built from source by `bin/devcontainer_post_create.sh` into `~/.local/bin`:
 
 | Tool | Source | Why |
-|---|---|---|
+| --- | --- | --- |
 | `pgquarrel` | `github.com/eulerto/pgquarrel`, default branch, shallow clone | The candidate. |
 | `libpq-dev` | apt, only when `pg_config` is missing | Headers for the build. |
 | `make`, `gcc`, `git` | Already on the runner | Build and fetch. |
