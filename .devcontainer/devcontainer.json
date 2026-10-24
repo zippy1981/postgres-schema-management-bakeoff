@@ -4,7 +4,8 @@
 	"name": "Python 3 & PostgreSQL",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	// Must match the app volume target in docker-compose.yml.
+	"workspaceFolder": "/workspaces/postgres-schema-management-bakeoff",
 	"features": {
 		"registry.gitlab.com/pravorskyi/devcontainer-features/claude-code:1": {
 			"channel": "stable"
