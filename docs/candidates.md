@@ -9,7 +9,7 @@ The entries are from general knowledge and have not been checked against current
 ## Candidates
 
 | # | Tool | Language / form | How it reads `database/` | Notes |
-|---|------|-----------------|--------------------------|-------|
+| --- | ------ | ----------------- | -------------------------- | ------- |
 | 1 | [migra](https://github.com/djrobstep/migra) | Python CLI library | Apply `database/` to a scratch database, then diff it against the target | Diff tool. Deploy is `migra --unsafe` or the printed SQL. Needs a shadow DB step. |
 | 2 | [pg-schema-diff](https://github.com/stripe/pg-schema-diff) (Stripe) | Go CLI | Takes a directory of SQL files as the desired schema (`--to-dir`) | Plans and applies the diff. Designed for declarative SQL input. |
 | 3 | [Atlas](https://atlasgo.io) (Ariga) | Go CLI | Desired state as SQL files (`file://` source) | Declarative `schema apply`. Also has a migration mode, which the rules exclude. Confirm the SQL-source mode is enabled for the pinned version. |
@@ -25,7 +25,7 @@ Entries 8 and 9 are controls, not candidates. Entries 1 to 7 are the candidates.
 ## Excluded
 
 | Tool | Reason |
-|------|--------|
+| ------ | -------- |
 | Flyway, Liquibase (changelog mode), Sqitch, dbmate, golang-migrate, pgroll | Migration-first. Section 1 rules out deploying from versioned scripts. |
 | Pyrseas, SchemaHero | Schema defined in YAML. Section 1 rules this out. |
 | Alembic, SQLAlchemy, Django migrations | ORM or Python model source. Section 1 rules this out. |
