@@ -1,1 +1,3 @@
 .venv/
+candidates/*/working_folder/
+candidates/*/test_results/

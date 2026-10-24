@@ -1,0 +1,22 @@
+# pg-schema-diff
+
+Candidate: [pg-schema-diff](https://github.com/stripe/pg-schema-diff) from Stripe. It plans and applies the difference between a directory of SQL files and a live database.
+
+## Tools installed
+
+Built by `bin/devcontainer_post_create.sh` with `go install` into `~/.local/bin`:
+
+| Tool | Source | Why |
+|---|---|---|
+| `pg-schema-diff` | `github.com/stripe/pg-schema-diff/cmd/pg-schema-diff@latest` | The candidate. |
+
+Needs the Go toolchain on `PATH`. GitHub's `ubuntu-latest` runner has one. The devcontainer does not, so this hook stops there.
+
+## How it deploys
+
+`pg-schema-diff apply --dsn "$DATABASE_URL" --schema-dir database`, with the tree passed unchanged. This tests whether the tool orders the files itself.
+
+## Known limits
+
+- Version is `@latest`, not pinned. Pin it once a version is chosen.
+- The CLI flags are written from memory and are unverified. The first matrix run is the check.
