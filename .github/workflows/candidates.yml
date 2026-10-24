@@ -112,6 +112,12 @@ jobs:
         if: always()
         run: bash scripts/ci/capture.sh "$CANDIDATE_DIR" "$DATABASE_URL"
 
+      - id: verify
+        name: Compare objects with the reference
+        if: always()
+        continue-on-error: true
+        run: bash scripts/ci/verify-objects.sh "$CANDIDATE_DIR" 2>&1 | tee -a "$CANDIDATE_DIR/test_results/test_logs.log"
+
       - name: Record step outcomes
         if: always()
         run: |
@@ -119,6 +125,7 @@ jobs:
             echo "create=${{ steps.create.outcome }}"
             echo "install=${{ steps.install.outcome }}"
             echo "deploy=${{ steps.deploy.outcome }}"
+            echo "objects=${{ steps.verify.outcome }}"
           } > "$CANDIDATE_DIR/test_results/status.txt"
           cat "$CANDIDATE_DIR/test_results/status.txt"
 
@@ -132,7 +139,7 @@ jobs:
           retention-days: 30
 
       - name: Fail the job if any step failed
-        if: always() && (steps.create.outcome != 'success' || steps.install.outcome != 'success' || steps.deploy.outcome != 'success')
+        if: always() && (steps.create.outcome != 'success' || steps.install.outcome != 'success' || steps.deploy.outcome != 'success' || steps.verify.outcome != 'success')
         run: exit 1
 
   report:
