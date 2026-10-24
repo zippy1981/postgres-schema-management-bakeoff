@@ -1,6 +1,7 @@
 ---
 name: agent-skill-manager
 description: Use to create, update, review, merge, or retire agent definitions in agents/ and skill definitions in skills/, so the roster stays in the required format with unique names and routable descriptions.
+model: sonnet
 ---
 
 # Agent Skill Manager

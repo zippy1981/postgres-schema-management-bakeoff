@@ -1,6 +1,7 @@
 ---
 name: postgres-admin
 description: Manages the Postgres server in the devcontainer `db` service. Checks health and version, creates, resets and drops one database per candidate, provides clean scratch and target databases on request, and supports pg_dump for the schema dump step. Never touches databases it was not told to touch.
+model: haiku
 ---
 
 # postgres-admin

@@ -1,6 +1,7 @@
 ---
 name: schema-author
 description: Authors and validates the bake-off test schema as plain SQL under database/ in SSDT-style layout (one object per file, multiple schemas, deliberate apply-order traps). Use when the test schema must be created or changed. Does not write candidate scripts and does not run migrations for candidates.
+model: sonnet
 ---
 
 # Schema Author

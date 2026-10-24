@@ -1,6 +1,7 @@
 ---
 name: migration-runner
 description: Runs one named candidate's migration entry point (candidates/<NAME>/bin/) against that candidate's own database, captures the full log with timestamps and exit codes, dumps the resulting schema with deterministic pg_dump options, and reports pass or fail with evidence. Use once per candidate per bake-off run.
+model: haiku
 ---
 
 # migration-runner
