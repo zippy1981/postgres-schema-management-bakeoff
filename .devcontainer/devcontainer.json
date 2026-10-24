@@ -8,8 +8,14 @@
 	"features": {
 		"registry.gitlab.com/pravorskyi/devcontainer-features/claude-code:1": {
 			"channel": "stable"
-		}
-	}
+		},
+		"ghcr.io/devcontainers-extra/features/uv:1": {
+			"version": "0.12.24"
+		},
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/devcontainers/features/node:1": {}
+	},
+	"postCreateCommand": "bash .devcontainer/post_create.sh"
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
