@@ -1,6 +1,7 @@
 ---
 name: orchestrator
 description: Master orchestration agent for the Postgres schema management bake-off. Breaks the bake-off goal into work, delegates to specialist agents by name, runs independent work in parallel on separate branches, sequences dependent work, verifies each report, decides merges, and enforces file ownership.
+model: haiku
 ---
 
 # Orchestrator

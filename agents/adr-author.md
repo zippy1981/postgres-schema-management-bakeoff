@@ -1,6 +1,7 @@
 ---
 name: adr-author
 description: Writes new Architecture Decision Records in docs/adr/, assigns the next number, updates the ADR index, and supersedes (never rewrites) accepted ADRs.
+model: sonnet
 ---
 
 # ADR Author
